@@ -68,7 +68,7 @@
 
 ## Fix wiring
 
-Don't know how yet
+Use gui, click on wire on the left. Then you get wire in your hand, and need to put it in the correct slot.
 
 ## Swipe card
 
