@@ -3,6 +3,7 @@ package me.dj1tjoo.customgui.guis;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
 import me.dj1tjoo.customgui.guis.modules.ClearPlayerInventoryModule;
+import me.dj1tjoo.customgui.guis.modules.FillInventoryModule;
 import me.dj1tjoo.customgui.guis.modules.GUIButtonModule;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
@@ -12,19 +13,20 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.UUID;
 
-public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener {
+public class FirstGUI extends BasicGUI
+    implements GUIButtonModule.ClickListener, FillInventoryModule.Filler {
     private GUIButtonModule button;
-    private ClearPlayerInventoryModule clearModule;
     private int count;
 
     public FirstGUI(Plugin plugin) {
-        super(plugin);
+        super(plugin, 54);
 
         count = 0;
     }
@@ -34,15 +36,15 @@ public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener 
         button =
             new GUIButtonModule(this, GUIButtonModule.generateSlots(38, 42), "custom_gui.opslaan",
                 132, -8);
-        clearModule = new ClearPlayerInventoryModule(this, ClearPlayerInventoryModule.Type.STORE);
+        registerModule(button);
+
+        registerModule(new ClearPlayerInventoryModule(this, ClearPlayerInventoryModule.Type.STORE));
+        registerModule(new FillInventoryModule(this, FillInventoryModule.Type.SINGLE, this));
     }
 
     @Override
     protected void register() {
         super.register();
-
-        button.register(plugin);
-        clearModule.register(plugin);
 
         button.registerClickListener(this);
 
@@ -52,9 +54,6 @@ public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener 
     @Override
     protected void unregister() {
         super.unregister();
-
-        button.unregister();
-        clearModule.unregister();
 
         button.unregisterClickListener(this);
 
@@ -67,8 +66,7 @@ public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener 
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory == null || !isInventoryOpened(clickedInventory)) {
+        if (!isInventoryOpened(event)) {
             return;
         }
 
@@ -86,13 +84,8 @@ public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener 
     }
 
     @Override
-    protected Inventory createInventory() {
-        Inventory newInventory = Bukkit.createInventory(this, 54, createTitle());
-
-        if (inventory != null) {
-            newInventory.setContents(inventory.getContents());
-            return newInventory;
-        }
+    public void fill(UUID uuid) {
+        FillInventoryModule module = (FillInventoryModule) getModule(uuid);
 
         ItemStack titleBlocker = ItemStack.of(Material.PAPER);
 
@@ -105,10 +98,8 @@ public class FirstGUI extends BasicGUI implements GUIButtonModule.ClickListener 
 
         titleBlocker.setData(DataComponentTypes.HIDE_TOOLTIP);
 
-        newInventory.setItem(45, titleBlocker);
-
-
-        return newInventory;
+        Inventory inventory = module.getStoredInventory();
+        inventory.setItem(45, titleBlocker);
     }
 
     @Override

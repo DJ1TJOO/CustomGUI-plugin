@@ -4,6 +4,7 @@ import me.dj1tjoo.customgui.guis.BasicGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -55,7 +56,7 @@ public class ClearPlayerInventoryModule implements GUIModule, Listener {
         return uuid;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClose(InventoryCloseEvent event) {
         if (event.getReason() == InventoryCloseEvent.Reason.OPEN_NEW) {
             return;
@@ -75,7 +76,7 @@ public class ClearPlayerInventoryModule implements GUIModule, Listener {
         playerInventories.remove(uuid);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onInventoryOpen(InventoryOpenEvent event) {
         if (event.isCancelled()) {
             return;
@@ -99,7 +100,7 @@ public class ClearPlayerInventoryModule implements GUIModule, Listener {
             .setContents(new ItemStack[player.getInventory().getContents().length]);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.isCancelled()) {
             return;

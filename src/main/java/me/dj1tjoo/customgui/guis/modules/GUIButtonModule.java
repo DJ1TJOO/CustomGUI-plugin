@@ -86,12 +86,11 @@ public class GUIButtonModule implements GUIModule, Listener {
             return;
         }
 
-        Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory == null || !gui.isInventoryOpened(clickedInventory)) {
+        if (!gui.isInventoryOpened(event)) {
             return;
         }
 
-        if (slots.contains(event.getSlot())) {
+        if (slots.contains(event.getRawSlot())) {
             pressButton(event.getWhoClicked());
         }
     }
