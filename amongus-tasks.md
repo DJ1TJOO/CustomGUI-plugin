@@ -64,7 +64,7 @@
 
 ## Clean vent
 
-Use GUI, put pizza and stuff in there, when player clicks it removes them.
+-   [x] Use GUI, put pizza and stuff in there, when player clicks it removes them.
 
 ## Fix wiring
 
