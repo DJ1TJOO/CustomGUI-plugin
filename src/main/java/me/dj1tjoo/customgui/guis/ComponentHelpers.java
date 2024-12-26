@@ -9,6 +9,7 @@ public class ComponentHelpers {
     public static Key MINECRAFT_FONT = Key.key("minecraft", "default");
     public static Key SPACE_FONT = Key.key("space", "default");
     public static Key GUI_FONT = Key.key("custom_gui", "default");
+    public static Key AMONG_US_FONT = Key.key("among_us", "default");
 
     public static int MINECRAFT_CHARACTER_SPACING = 1;
 
