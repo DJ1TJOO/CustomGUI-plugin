@@ -1,15 +1,13 @@
 package me.dj1tjoo.customgui.guis.modules;
 
 import me.dj1tjoo.customgui.guis.BasicGUI;
-import me.dj1tjoo.customgui.guis.ComponentHelpers;
+import me.dj1tjoo.customgui.ComponentHelpers;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -113,10 +111,8 @@ public class GUIButtonModule implements GUIModule, Listener {
     }
 
     public Component createTitle() {
-        Component button = Component.translatable(isPressed ? buttonPressedImage : buttonImage)
-            .font(ComponentHelpers.GUI_FONT).color(TextColor.fromCSSHexString("#ffffff"));
-
-        return ComponentHelpers.offset(button, width, x);
+        Component button = ComponentHelpers.bitmap(isPressed ? buttonPressedImage : buttonImage, ComponentHelpers.GUI_FONT);
+        return ComponentHelpers.inPlace(button, width, x);
     }
 
     public void registerClickListener(ClickListener listener) {

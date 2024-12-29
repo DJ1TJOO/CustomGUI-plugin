@@ -1,9 +1,0 @@
-name: CustomGUI
-version: '${project.version}'
-main: me.dj1tjoo.customgui.CustomGUIPlugin
-api-version: '1.21'
-
-commands:
-  open-gui:
-    description: Opens a custom gui
-    usage: /open-gui <gui-name>

@@ -2,6 +2,7 @@ package me.dj1tjoo.customgui.guis;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.CustomModelData;
+import me.dj1tjoo.customgui.ComponentHelpers;
 import me.dj1tjoo.customgui.guis.modules.ClearPlayerInventoryModule;
 import me.dj1tjoo.customgui.guis.modules.FillInventoryModule;
 import me.dj1tjoo.customgui.guis.modules.GUIButtonModule;
@@ -13,7 +14,6 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -104,9 +104,8 @@ public class FirstGUI extends BasicGUI
 
     @Override
     protected Component createTitle() {
-        Component gui = ComponentHelpers.offset(
-            Component.translatable("custom_gui.gui").font(ComponentHelpers.GUI_FONT)
-                .color(TextColor.fromCSSHexString("#ffffff")), 175, -8);
+        Component gui = ComponentHelpers.inPlace(
+            ComponentHelpers.bitmap("custom_gui.gui", ComponentHelpers.GUI_FONT), 175, -8);
 
         Component buttonTitle = button.createTitle();
 

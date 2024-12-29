@@ -1,7 +1,8 @@
 package me.dj1tjoo.customgui.commands;
 
 import me.dj1tjoo.customgui.CustomGUIPlugin;
-import me.dj1tjoo.customgui.guis.CleanVentGUI;
+import me.dj1tjoo.customgui.titles.SwipeCardTitle;
+import me.dj1tjoo.customgui.guis.tasks.CleanVentGUI;
 import me.dj1tjoo.customgui.guis.FirstGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +20,7 @@ import java.util.UUID;
 public class OpenGUICommand implements CommandExecutor, TabCompleter {
 
     public static String COMMAND = "open-gui";
-    private static List<String> GUIS = List.of("first", "clean_vent");
+    private static List<String> GUIS = List.of("first", "clean_vent", "swipe_card");
     private final CustomGUIPlugin plugin;
 
     private final Map<UUID, FirstGUI> firstGUIMap;
@@ -64,6 +65,11 @@ public class OpenGUICommand implements CommandExecutor, TabCompleter {
                 }
 
                 cleanVentGUIMap.get(uuid).open(player);
+                break;
+
+            case "swipe_card":
+                new SwipeCardTitle(plugin).open(player);
+                break;
         }
 
         // /give DJ1TJOO minecraft:oak_button[minecraft:item_model='custom_gui:empty',minecraft:hide_tooltip={},minecraft:item_name='Opslaan',minecraft:max_stack_size=1]

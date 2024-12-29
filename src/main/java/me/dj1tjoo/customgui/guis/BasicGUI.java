@@ -18,7 +18,6 @@ import java.util.UUID;
 
 public abstract class BasicGUI implements InventoryHolder, Listener {
     protected final Plugin plugin;
-
     protected final UUID uuid;
 
     protected final int size;
@@ -40,7 +39,7 @@ public abstract class BasicGUI implements InventoryHolder, Listener {
         closed = true;
     }
 
-    abstract void createModules();
+    protected abstract void createModules();
 
     protected void register() {
         for (GUIModule module : modules) {
@@ -121,7 +120,8 @@ public abstract class BasicGUI implements InventoryHolder, Listener {
         register();
 
         inventory = createInventory();
-        Bukkit.getScheduler().runTask(plugin, () -> humanEntity.openInventory(inventory));
+        //Bukkit.getScheduler().runTask(plugin, () ->
+        humanEntity.openInventory(inventory);
     }
 
     public void reopen(HumanEntity humanEntity) {
@@ -133,7 +133,7 @@ public abstract class BasicGUI implements InventoryHolder, Listener {
         humanEntity.openInventory(inventory);
     }
 
-    abstract Component createTitle();
+    protected abstract Component createTitle();
 
     private Inventory createInventory() {
         return Bukkit.createInventory(this, size, createTitle());

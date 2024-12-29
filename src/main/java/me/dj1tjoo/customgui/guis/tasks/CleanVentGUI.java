@@ -1,11 +1,14 @@
-package me.dj1tjoo.customgui.guis;
+package me.dj1tjoo.customgui.guis.tasks;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import me.dj1tjoo.customgui.guis.BasicGUI;
+import me.dj1tjoo.customgui.ComponentHelpers;
+import me.dj1tjoo.customgui.MinecraftHelpers;
 import me.dj1tjoo.customgui.guis.modules.ClearPlayerInventoryModule;
 import me.dj1tjoo.customgui.guis.modules.FillInventoryModule;
 import net.kyori.adventure.key.Key;
+import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -20,8 +23,8 @@ import java.util.UUID;
 
 public class CleanVentGUI extends BasicGUI implements FillInventoryModule.Filler {
 
-    private final static  VentItem SMOKE = new VentItem("among_us", "tasks_clean_vent_smoke", "", false);
-    private final static  VentItem TITLE_BLOCKER = new VentItem("among_us", "tasks_clean_vent_title_blocker", "", false);
+    private final static VentItem SMOKE = new VentItem("among_us", "tasks_clean_vent_smoke", "", false);
+    private final static VentItem TITLE_BLOCKER = new VentItem("among_us", "tasks_clean_vent_title_blocker", "", false);
     private final static List<VentItem> GARBAGE_ITEMS = List.of(
         new VentItem("among_us", "tasks_clean_vent_pizza", "Pizza", true),
         new VentItem("among_us", "tasks_clean_vent_tennis_bal", "Tennis Ball", true),
@@ -76,9 +79,9 @@ public class CleanVentGUI extends BasicGUI implements FillInventoryModule.Filler
         if (GARBAGE_ITEMS.stream().noneMatch(t -> itemModel.equals(t.getItemModel()))) {
             return;
         }
-
         event.setCancelled(true);
         event.getClickedInventory().setItem(event.getSlot(), SMOKE.createItemStack());
+        event.getWhoClicked().playSound(Sound.sound(Key.key("minecraft", "item.flintandsteel.use"), Sound.Source.NEUTRAL, 1.0f, 1.0f));
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             event.getClickedInventory().setItem(event.getSlot(), null);
         }, MinecraftHelpers.secondsToTicks(0.5));
@@ -112,9 +115,8 @@ public class CleanVentGUI extends BasicGUI implements FillInventoryModule.Filler
 
     @Override
     protected Component createTitle() {
-        Component gui = ComponentHelpers.offset(
-            Component.translatable("among_us.tasks.clean_vent.vent").font(ComponentHelpers.AMONG_US_FONT)
-                .color(TextColor.fromCSSHexString("#ffffff")), 256, -8 - 40);
+        Component gui = ComponentHelpers.inPlace(
+            ComponentHelpers.bitmap("among_us.tasks.clean_vent.vent", ComponentHelpers.AMONG_US_FONT), 256, -8 - 40);
 
         return ComponentHelpers.join(gui);
     }

@@ -1,4 +1,4 @@
-package me.dj1tjoo.customgui.guis;
+package me.dj1tjoo.customgui;
 
 public class MinecraftHelpers {
     public static long secondsToTicks(double seconds) {
