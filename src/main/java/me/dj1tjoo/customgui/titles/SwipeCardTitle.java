@@ -67,7 +67,7 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
         super.open(humanEntity);
         humanEntity.playSound(
             Sound.sound(Key.key("among_us", "card_swipe.card_swipe_open"), Sound.Source.NEUTRAL,
-                1.0f, 1.0f));
+                1.0f, randomPitch(0.2f)));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
         super.closed(humanEntity);
         humanEntity.playSound(
             Sound.sound(Key.key("among_us", "card_swipe.card_swipe_close"), Sound.Source.NEUTRAL,
-                1.0f, 1.0f));
+                1.0f, randomPitch(0.2f)));
     }
 
     @EventHandler
@@ -140,11 +140,11 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
 
             float diff = normalizedInitialYaw - normalizedYaw;
 
-            if (diff / 3 < -2) {
+            if (diff / 3 < -2 && cardOffset != 0) {
                 cardOffset = 0;
                 status = Status.FAILED;
                 humanEntity.playSound(Sound.sound(Key.key("among_us", "card_swipe.card_swipe_fail"),
-                    Sound.Source.NEUTRAL, 1.0f, 1.0f));
+                    Sound.Source.NEUTRAL, 1.0f, randomPitch(0.2f)));
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     cardOffset = 0;
                     status = Status.PICKED_UP;
@@ -155,7 +155,7 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
                     initialMove = Instant.now();
                     humanEntity.playSound(
                         Sound.sound(Key.key("among_us", "card_swipe.card_swipe_swipe"),
-                            Sound.Source.NEUTRAL, 1.0f, 1.0f));
+                            Sound.Source.NEUTRAL, 1.0f, randomPitch(1f)));
                 }
 
                 cardOffset += diff / 3;
@@ -166,11 +166,11 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
                         (currenTime.toEpochMilli() - initialMove.toEpochMilli()) / 1000.0;
 
                     double speed = cardOffset / delta;
-                    if (speed < 90 || speed > 110) {
+                    if (speed < 85 || speed > 115) {
                         status = Status.FAILED;
                         humanEntity.playSound(
                             Sound.sound(Key.key("among_us", "card_swipe.card_swipe_fail"),
-                                Sound.Source.NEUTRAL, 1.0f, 1.0f));
+                                Sound.Source.NEUTRAL, 1.0f, randomPitch(0.2f)));
                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                             cardOffset = 0;
                             status = Status.PICKED_UP;
@@ -180,7 +180,7 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
                         status = Status.COMPLETED;
                         humanEntity.playSound(
                             Sound.sound(Key.key("among_us", "card_swipe.card_swipe_completed"),
-                                Sound.Source.NEUTRAL, 1.0f, 1.0f));
+                                Sound.Source.NEUTRAL, 1.0f, randomPitch(0.2f)));
                         Bukkit.getScheduler().runTaskLater(plugin, this::close,
                             MinecraftHelpers.secondsToTicks(0.5));
                     }
@@ -203,7 +203,7 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
 
         ((HumanEntity) event.getPlayer()).playSound(
             Sound.sound(Key.key("among_us", "card_swipe.card_swipe_pickup"), Sound.Source.NEUTRAL,
-                1.0f, 1.0f));
+                1.0f, randomPitch(1)));
         reopen(event.getPlayer());
     }
 
@@ -262,5 +262,9 @@ public class SwipeCardTitle extends BasicTitle implements Listener {
 
         return ComponentHelpers.join(walletTable, card, scannerTop, text, statusLight, space)
             .shadowColor(ShadowColor.none());
+    }
+
+    private float randomPitch(float factor) {
+        return (float) (((Math.random() - 0.5f) * factor) + 1f);
     }
 }

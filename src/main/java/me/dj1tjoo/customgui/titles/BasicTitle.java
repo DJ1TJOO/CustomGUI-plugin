@@ -210,7 +210,6 @@ public abstract class BasicTitle {
                 new int[] {humanEntity.getEntityId()});
         PacketEvents.getAPI().getPlayerManager().sendPacket(humanEntity, setPassengers);
 
-        Bukkit.getLogger().info("y " + humanEntity.getLocation().getDirection());
         armorStand = humanEntity.getWorld()
             .createEntity(humanEntity.getLocation(), ArmorStand.class);
 
